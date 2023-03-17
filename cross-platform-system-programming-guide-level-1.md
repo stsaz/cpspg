@@ -226,8 +226,6 @@ We call our own `heap_alloc()` function (we'll discuss its implementation soon) 
 	array[0] = 123; // should work fine on ARM
 ```
 
-Note that the pointers returned by `heap_alloc()` are unique for our process and unchanged until we free or reallocate them.  After that, the same pointer may be returned on the next call to `heap_alloc()`.  Also, as you might already understand, this pointer is just a virtual address chosen by OS for us at the time of allocation.  Virtual address isn't the same thing as physical address - virtual pointer is just mapped to a physical memory, that's all.??
-
 One more important thing: there's no one to stop us from reading or even writing some data past the buffer's boundaries.  For example, in our example here we actually can try to write more than 8MB of data into that buffer and most likely we will succeed in doing so.  However, disaster may happen at any moment, because we accidentally may overwrite the data of our other heap buffers.  The whole heap memory region may become corrupted after that.  If we try to access the data even further, we may pass the critical line where an unmapped memory space begins.  In this case CPU will trigger an exception and our program will crash.  So this means that when working with buffers in C we should always pass their capacity as a function parameter (or in `struct`) so that none of our functions will access the data past the buffer end.  If you're writing a program and you experience sudden crashes, most likely your code has accidentally overwritten a heap or stack buffer somewhere.  If that's the case, you may try compiling your app with `-fsanitize=address` option which will print a nice message about where you made a mistake.  It usually helps.
 
 Next line:
@@ -580,8 +578,7 @@ And pass the wide-character data to the system:
 		// error writing to console
 ```
 
-??
-But why do we ignore `written` value?  Because it would be somehwat problematic for us to use this value in case `WriteConsoleW()` returns before writing all our data.  We can't quickly get the position in our UTF-8 text at any particular number of wide-characters.  However, in practice, the system won't return from this function unless it successfully transferred all our data.  Our `stdout_write()` function's design isn't correct for this case anyway.  So in the end I think it's quite safe to assume this and just ignore `written` value.
+> But why do we ignore `written` value?  Because it would be somehwat problematic for us to use this value in case `WriteConsoleW()` returns before writing all our data.  We can't quickly get the position in our UTF-8 text at any particular number of wide-characters.  However, in practice, the system won't return from this function unless it successfully transferred all our data.  Our `stdout_write()` function's design isn't correct for this case anyway.  So in the end I think it's quite safe to assume this and just ignore `written` value.
 
 
 ### Standard I/O: redirection
@@ -2424,4 +2421,4 @@ We've learned how to suspend our program for some time.  However, more complex a
 
 That's it for Level 1 tutorial.  I really hope you have learned something interesting and new.  There's still much stuff that we haven't covered yet, and I'll do my best to write the next, Level 2, tutorial where we will discuss more difficult topics of cross-platform system programming.
 
-Also, if you find a mistake, please submit a PR with your corrections.
+Also, if you find a mistake, please [submit a PR](https://github.com/stsaz/cpspg/pulls) with your corrections.
