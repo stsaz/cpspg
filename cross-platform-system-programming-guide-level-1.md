@@ -480,7 +480,7 @@ There's no need to prepare them before using.  When our program is started, the 
 
 This is a very simple program which reads some text from the user, and then it prints the same text back to him.  To close the running program user can press `Ctrl+C`.
 
-[std-echo.c](https://github.com/stsaz/ffos/blob/master/FFOS/std-echo.c)
+[std-echo.c](std-echo.c)
 
 Scroll down to `main()`.  First, we read some text from the user:
 
@@ -514,6 +514,7 @@ ssize_t stdin_read(void *buf, size_t cap)
 {
 	return read(STDIN_FILENO, buf, cap);
 }
+
 ssize_t stdout_write(const void *data, size_t len)
 {
 	return write(STDOUT_FILENO, data, len);
