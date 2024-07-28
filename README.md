@@ -4,6 +4,7 @@ This set of tutorials is for C programmers who want to learn how to write cross-
 
 * [CPSPG: Level 1](cross-platform-system-programming-guide-level-1.md)
 	* [RUS](руководство-по-кросс-платформенному-системному-программированию-уровень-1.md)
+* [CPSPG: Level 2](cross-platform-system-programming-guide-level-2.md)
 * [Kernel Queue: The Complete Guide On The Most Essential Technology For High-Performance I/O](kernel-queue-complete-guide.md)
 * [Audio API: Playing and Recording Sound on Linux, Windows, FreeBSD and macOS](audio-api-quick-start-guide.md)
 
