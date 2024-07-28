@@ -1,0 +1,11 @@
+# Makefile for macOS
+
+BINS := coreaudio-dev-list coreaudio-record coreaudio-play
+
+all: $(BINS)
+
+clean:
+	rm $(BINS)
+
+coreaudio-%: coreaudio-%.c
+	clang -g $< -o $@ -framework CoreFoundation -framework CoreAudio

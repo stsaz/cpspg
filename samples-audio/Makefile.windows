@@ -1,0 +1,11 @@
+# Makefile for Windows
+
+BINS := wasapi-dev-list.exe wasapi-record.exe wasapi-play.exe
+
+all: $(BINS)
+
+clean:
+	rm $(BINS)
+
+wasapi-%.exe: wasapi-%.c
+	x86_64-w64-mingw32-gcc -g $< -o $@ -lole32

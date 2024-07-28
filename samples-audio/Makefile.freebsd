@@ -1,0 +1,11 @@
+# Makefile for FreeBSD
+
+BINS := oss-dev-list oss-record oss-play
+
+all: $(BINS)
+
+clean:
+	rm $(BINS)
+
+oss-%: oss-%.c
+	clang -g $< -o $@ -lm

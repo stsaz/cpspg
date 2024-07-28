@@ -1,0 +1,15 @@
+# Makefile for Linux
+
+BINS := alsa-dev-list alsa-record alsa-play \
+	pulseaudio-dev-list pulseaudio-record pulseaudio-play
+
+all: $(BINS)
+
+clean:
+	rm $(BINS)
+
+alsa-%: alsa-%.c
+	gcc -g $< -o $@ -lasound
+
+pulseaudio-%: pulseaudio-%.c
+	gcc -g $< -o $@ -lpulse
