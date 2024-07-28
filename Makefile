@@ -2,6 +2,7 @@
 
 C := clang
 DOT_EXE :=
+SRC_DIR := samples
 
 ifeq "$(OS)" "windows"
 	C := x86_64-w64-mingw32-gcc
@@ -28,5 +29,5 @@ all: $(BINS)
 clean:
 	rm -f $(BINS)
 
-%$(DOT_EXE): $(DIR)/%.c
+%$(DOT_EXE): $(SRC_DIR)/%.c
 	$(C) $(CFLAGS) $< -o $@

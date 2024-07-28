@@ -211,7 +211,7 @@ When Linux reserves a memory region for us, it doesn't immediately reserve the s
 
 OK, now let's have a look at the example which allocates a buffer on heap and then immediately frees it.
 
-[heap-mem.c](heap-mem.c)
+[heap-mem.c](samples/heap-mem.c)
 
 Scroll down to our `main()` function.  Here's the statement that allocates a 8MB heap buffer:
 
@@ -480,7 +480,7 @@ There's no need to prepare them before using.  When our program is started, the 
 
 This is a very simple program which reads some text from the user, and then it prints the same text back to him.  To close the running program user can press `Ctrl+C`.
 
-[std-echo.c](std-echo.c)
+[std-echo.c](samples/std-echo.c)
 
 Scroll down to `main()`.  First, we read some text from the user:
 
@@ -725,7 +725,7 @@ Here's very simple program which reads some data from a file, then writes the sa
 	hello!
 	hello!
 
-[file-echo.c](file-echo.c)
+[file-echo.c](samples/file-echo.c)
 
 Scroll down to `main()`.  The first step is to open the existing file for reading and writing:
 
@@ -928,7 +928,7 @@ For us, userlevel programmers, this internal buffer is like an unlimited line wi
 
 Now that we understand how file offsets work, we're ready for a new code example.  It is slightly different from the previous example: we're going to overwrite some of the existing data in a file and truncate the file so its size will become less than before.  For example, suppose we have a file with `Hello!` data.  We read it into our buffer, then move the cursor back to the beginning and overwrite the data with the second half, i.e. `lo!`.  Then we call a system function to truncate the file for us.  As a result, the rest of data in our file will be discarded.
 
-[file-echo-trunc.c](file-echo-trunc.c)
+[file-echo-trunc.c](samples/file-echo-trunc.c)
 
 Scroll to `main()` and skip the code for `file_open()` and `file_read()` as we already know how they work.  Here's the code that moves file cursor to the beginning of the file:
 
@@ -1031,7 +1031,7 @@ Reference: [ffos/file.h](https://github.com/stsaz/ffos/blob/master/FFOS/file.h)
 
 Many system functions may fail at runtime for different reasons that we can't control.  When they fail, they usually set an error code so that we can determine why exactly it has failed.  In real world applications handling the errors correctly and showing an error/warning message to the user is the least we can do.  In the following example we force the system to return error code to us, then we get the error message and show it to the user.
 
-[err.c](err.c)
+[err.c](samples/err.c)
 
 First, this is how we can force the system function to return an error to us.
 
@@ -1177,7 +1177,7 @@ In this chapter we'll learn how to:
 
 In this example we create a directory, create a file within, rename the file, then delete both file and the directory.
 
-[file-man.c](file-man.c)
+[file-man.c](samples/file-man.c)
 
 Scroll down to `main()`.  First, we create a new directory:
 
@@ -1361,7 +1361,7 @@ Reference: [ffos/file.h](https://github.com/stsaz/ffos/blob/master/FFOS/file.h),
 
 In this example we create a new file, get its meta data then update file modification time and attributes.
 
-[file-props.c](file-props.c)
+[file-props.c](samples/file-props.c)
 
 Scroll down to `main()` function.  We create a new file here, but unlike in the previous example, we don't want to overwrite it if it already exists.  If the file already exists, OS will return an error to us.  We force this behaviour by using `FILE_CREATENEW` flag.
 
@@ -1633,7 +1633,7 @@ Reference: [ffos/file.h](https://github.com/stsaz/ffos/blob/master/FFOS/file.h)
 
 In this example we open the current directory for listing its contents and print all files/directories it contains.
 
-[dir-list.c](dir-list.c)
+[dir-list.c](samples/dir-list.c)
 
 Scroll down to `main()`.  To open a directory we use a structure object of type `dirscan`.  The object holds some data needed for directory listing.  Think of it as our own directory-listing descriptor.  The second parameter is the directory path (absolute or relative).  The function returns `0` on success.
 
@@ -1910,7 +1910,7 @@ Reference: [ffos/dirscan.h](https://github.com/stsaz/ffos/blob/master/FFOS/dirsc
 
 Remember when we talked about redirection of standard I/O descriptors?  The redirection process is actually implemented via pipes.  A pipe is an object that we can use for reading data from another process, or writing the data to it.  Of course we don't know yet about system processes, so we just use both ends of a pipe by ourselves in the next example.
 
-[pipe.c](pipe.c)
+[pipe.c](samples/pipe.c)
 
 Scroll down to `main()`.  First, we need to create a new pipe and get its descriptor.  Each pipe has two ends: the one we (or another process) read from and the one we (or another process) write to.  Our function returns `0` on success and assigns both read & write descriptors to our variables.
 
@@ -2032,7 +2032,7 @@ Reference: [ffos/pipe.h](https://github.com/stsaz/ffos/blob/master/FFOS/pipe.h)
 
 I think this will be quite interesting stuff for you - we'll learn how to execute other programs.  When we execute a new process, it's commonly said that we're becoming the *parent process* for it and the new process is the *child process* for us.  In the next example we will execute our `dir-list` binary file.
 
-[ps-exec.c](ps-exec.c)
+[ps-exec.c](samples/ps-exec.c)
 
 Scroll down to `main()`.  Because we refer to different applications, we use preprocessor branch to set the executable file path (`path`) and the first command-line argument `arg0` which will be seen as `argv[0]` in the newly created process.
 
@@ -2158,7 +2158,7 @@ Reference: [ffos/process.h](https://github.com/stsaz/ffos/blob/master/FFOS/proce
 
 Now for the final example in Level 1 tutorial, I want to show at least something cool.  Let's improve our previous example so that we create a new process and read its output by ourselves, but let it interact with the user console directly.  This time we will execute our `std-echo` binary file.  After we've read some data from the child process, we may do whatever we want with it, but here we just print the data to stdout.
 
-[ps-exec-out.c](ps-exec-out.c)
+[ps-exec-out.c](samples/ps-exec-out.c)
 
 Scroll to `main()`.  First, we create a pipe which will act as a bridge between our process and the child process.  We already know how it works.
 

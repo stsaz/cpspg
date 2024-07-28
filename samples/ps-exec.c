@@ -1,4 +1,4 @@
-/* Cross-Platform System Programming Guide: L1: execute a new program */
+/* Cross-Platform System Programming Guide: L1: execute a new program and forget about it */
 
 #include <assert.h>
 
