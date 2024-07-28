@@ -919,7 +919,7 @@ Every process that wants to use the resource calls a system function that decrem
 When the counter reaches 0, the next process that tries to gain access to the resource must wait until the counter is increased.
 When the process finishes using the resource, it calls a system function that increments the counter by 1.
 
-![](semaphore.svg)
+![](img/semaphore.svg)
 
 How to use semaphore objects:
 
@@ -1085,7 +1085,7 @@ The solution is simple: the pipe should have a unique identifier (a name).
 By using the same pipe name all other processes (clients) can establish connections with the first process (server) and pass data within these connections.
 Note that each connection is private between two processes, for example `connection#1` between `client#1` and `server` do not share any data with `connection#2` between `client#2` and `server`.
 
-![](pipe-named.svg)
+![](img/pipe-named.svg)
 
 This is the sample code:
 
