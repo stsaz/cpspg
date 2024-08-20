@@ -104,7 +104,7 @@ When we start a new process, we usually want to wait until the child process fin
 Also, sometimes the processes hang (never exit) for some reason, and we want to have an ability to terminate them forcefully, even if they don't respond to any external requests.
 In this example we try to read the child process's exit code, ensure that it's not yet exited, and then we just kill the process and get its exit code.
 
-[ps-exec-wait.c](samples/ps-exec-wait.c)
+[ps-exec-wait.c](samples-sys/ps-exec-wait.c)
 
 As you can see, the code executes our `std-echo` program.
 I chose it because it doesn't immediately exit by itself - it reads user input.
@@ -287,7 +287,7 @@ For example, `OpenProcess()` function, used for obtaining process descriptor by 
 
 The process may fetch the information about itself from the system: PID, executable file path, current directory.
 
-[ps-info.c](samples/ps-info.c)
+[ps-info.c](samples-sys/ps-info.c)
 
 Here's how we can get the executable file path:
 
@@ -549,7 +549,7 @@ That's the purpose of this next example.
 
 ![](img/signal.svg)
 
-[signal-interrupt.c](samples/signal-interrupt.c)
+[signal-interrupt.c](samples-sys/signal-interrupt.c)
 
 As you can see, our main code subscribes for receiving an interrupt signal with `sig_int_subscribe()` before it starts the loop.
 We pass the name of the function we want to handle the signal when it arrives - `ctrlc_handler`.
@@ -727,7 +727,7 @@ How CPU exceptions are processed by user-level programs:
 
 ### Handling CPU exceptions: practice
 
-[signal-cpu-exception.c](samples/signal-cpu-exception.c)
+[signal-cpu-exception.c](samples-sys/signal-cpu-exception.c)
 
 To subscribe to CPU exceptions, we first put the signal identifiers that we want to catch into an array and then pass this array to our `sig_subscribe()`.
 
@@ -935,7 +935,7 @@ And while the lock is being held, all other processes must wait until the lock i
 
 Now let's look at the example:
 
-[semaphore.c](samples/semaphore.c)
+[semaphore.c](samples-sys/semaphore.c)
 
 The main function calls are:
 
@@ -1089,7 +1089,7 @@ Note that each connection is private between two processes, for example `connect
 
 This is the sample code:
 
-[pipe-named.c](samples/pipe-named.c)
+[pipe-named.c](samples-sys/pipe-named.c)
 
 It contains the code for Server and its Clients.
 When a Client connects to Server, it just writes some data to the pipe connection, while Server just reads that data.
@@ -1377,7 +1377,7 @@ One more benefit of using file mappings is that the actual data will be also sto
 
 Now let's see our example.
 
-[file-mapping.c](samples/file-mapping.c)
+[file-mapping.c](samples-sys/file-mapping.c)
 
 Here's how we will use it:
 
@@ -1561,8 +1561,8 @@ Now the program may call the function from DLL by the pointer.
 
 Here's the code for DLL and for the executable that uses it:
 
-[dylib.c](samples/dylib.c),
-[dylib-load.c](samples/dylib-load.c)
+[dylib.c](samples-sys/dylib.c),
+[dylib-load.c](samples-sys/dylib-load.c)
 
 The only thing that we are required to do when building a DLL is to mark all the functions we want to export, i.e. the functions that will be visible externally.
 In this example this is done by our preprocessor definition `EXPORT`:
