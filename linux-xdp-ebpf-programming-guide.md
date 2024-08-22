@@ -202,8 +202,18 @@ Preparing an AF_XDP socket is a complex procedure, but again we rely on a librar
 
 	It also creates 2 arrays *rx-queue* & *tx-queue* that will hold `struct xdp_desc` elements for RX & TX packet control data (explained later).
 	Internally, `xsk_socket__create()` uses `mmap()` and `setsockopt(SOL_XDP)` syscalls for that.
-	We pass the network interface name we want to attach our XDP socket to.
-	Internally, it is resolved to the interface index that is passed to `bind()` syscall via `struct sockaddr_xdp`.
+
+	We specify the network interface name and its RX/TX queue index where we want to attach our XDP socket.
+	Internally, the network interface name is converted to interface index and then passed to `bind()` syscall via `struct sockaddr_xdp`.
+	As you can see, in this example we just attach to the first queue.
+	However, if your network card is operating in multiqueue mode by default, then we won't be able to catch the incoming traffic that gets automatically distributed to other queues.
+	If this is the case, you may use this command to set the network card's queues number to 1:
+
+	```sh
+	sudo ethtool -L INTERFACE combined 1
+	```
+
+	This way, all incoming traffic will always be directed to queue 0, and thus our program will catch all packets.
 
 * Finally, we associate the XDP socket we've just created to our BPF program.
 
@@ -466,12 +476,15 @@ Details on this subject are explained below in `eBPF Program` section.
 
 A few general notes about I/O on XDP sockets:
 
+* XDP socket can be attached only to 1 specific RX queue - it can not receive the traffic distributed for other queues.
+The easiest solution to this is just limiting the number of queues to 1.
 * BPF program acts as a packet filter and reroutes the input packets to the userspace.
 * The kernel networking subsystem does not see any traffic unless we decide so in our BPF program.
 * Application code is responsible for crafting and parsing all network protocol headers in each packet.
 * Application code is responsible for keeping track of white/green/red slots in the main memory region.
-* Actual network packet data is not copied anywhere - network card writes the data directly to the application-specified memory region.
-* When processing high load traffic there are no user-kernel context switching per packet vector because the updates on all 4 queues by producer can be directly visible by consumer.
+* In best scenario, the actual network packet data is not copied anywhere - network card writes the data directly to the application-specified memory region.
+But in case the driver doesn't support zero-copy mode, then the kernel will copy the data to the application automatically.
+* When processing high load traffic there is no user-kernel context switching per packet vector, because the updates on all 4 queues by producer can be directly visible by consumer.
 
 
 ## Crafting and Parsing ICMP Packets
